@@ -1,8 +1,6 @@
 export default function Home() {
   return (
     <>
-      <Hero />
-      <HomeMenu />
       <section className="text-center my-16" id="about">
         <SectionHeaders subHeader={"Our story"} mainHeader={"About us"} />
         <div className="text-gray-500 max-w-md mx-auto mt-4 flex flex-col gap-4">
