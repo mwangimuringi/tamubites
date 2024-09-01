@@ -1,7 +1,5 @@
 'use client';
 
-import Bars2 from "@/components/icons/Bars2";
-import ShoppingCart from "@/components/icons/ShoppingCart";
 import Link from "next/link";
 
 
@@ -10,7 +8,7 @@ export default function Header() {
     <header>
       <div className="flex items-center md:hidden justify-between">
         <Link className="text-primary font-semibold text-2xl" href={'/'}>
-          ST PIZZA
+          TAMUBITES
         </Link>
         <div className="flex gap-8 items-center">
           <Link href={'/cart'} className="relative">

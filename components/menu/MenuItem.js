@@ -1,54 +1,52 @@
-import {CartContext} from "@/components/AppContext";
-import MenuItemTile from "@/components/menu/MenuItemTile";
 import Image from "next/image";
 import {useContext, useState} from "react";
 import FlyingButton from "react-flying-item";
 import toast from "react-hot-toast";
 
 export default function MenuItem(menuItem) {
-  const {
-    image,name,description,basePrice,
-    sizes, extraIngredientPrices,
-  } = menuItem;
-  const [
-    selectedSize, setSelectedSize
-  ] = useState(sizes?.[0] || null);
-  const [selectedExtras, setSelectedExtras] = useState([]);
-  const [showPopup, setShowPopup] = useState(false);
-  const {addToCart} = useContext(CartContext);
+//   const {
+//     image,name,description,basePrice,
+//     sizes, extraIngredientPrices,
+//   } = menuItem;
+//   const [
+//     selectedSize, setSelectedSize
+//   ] = useState(sizes?.[0] || null);
+//   const [selectedExtras, setSelectedExtras] = useState([]);
+//   const [showPopup, setShowPopup] = useState(false);
+//   const {addToCart} = useContext(CartContext);
 
-  async function handleAddToCartButtonClick() {
-    console.log('add to cart');
-    const hasOptions = sizes.length > 0 || extraIngredientPrices.length > 0;
-    if (hasOptions && !showPopup) {
-      setShowPopup(true);
-      return;
-    }
-    addToCart(menuItem, selectedSize, selectedExtras);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    console.log('hiding popup');
-    setShowPopup(false);
-  }
-  function handleExtraThingClick(ev, extraThing) {
-    const checked = ev.target.checked;
-    if (checked) {
-      setSelectedExtras(prev => [...prev, extraThing]);
-    } else {
-      setSelectedExtras(prev => {
-        return prev.filter(e => e.name !== extraThing.name);
-      });
-    }
-  }
+//   async function handleAddToCartButtonClick() {
+//     console.log('add to cart');
+//     const hasOptions = sizes.length > 0 || extraIngredientPrices.length > 0;
+//     if (hasOptions && !showPopup) {
+//       setShowPopup(true);
+//       return;
+//     }
+//     addToCart(menuItem, selectedSize, selectedExtras);
+//     await new Promise(resolve => setTimeout(resolve, 1000));
+//     console.log('hiding popup');
+//     setShowPopup(false);
+//   }
+//   function handleExtraThingClick(ev, extraThing) {
+//     const checked = ev.target.checked;
+//     if (checked) {
+//       setSelectedExtras(prev => [...prev, extraThing]);
+//     } else {
+//       setSelectedExtras(prev => {
+//         return prev.filter(e => e.name !== extraThing.name);
+//       });
+//     }
+//   }
 
-  let selectedPrice = basePrice;
-  if (selectedSize) {
-    selectedPrice += selectedSize.price;
-  }
-  if (selectedExtras?.length > 0) {
-    for (const extra of selectedExtras) {
-      selectedPrice += extra.price;
-    }
-  }
+//   let selectedPrice = basePrice;
+//   if (selectedSize) {
+//     selectedPrice += selectedSize.price;
+//   }
+//   if (selectedExtras?.length > 0) {
+//     for (const extra of selectedExtras) {
+//       selectedPrice += extra.price;
+//     }
+//   }
 
   return (
     <>
