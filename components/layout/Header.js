@@ -7,13 +7,13 @@ export default function Header() {
 
   const session = useSession();
   const status = session?.status;
-  // const userData = session.data?.user;
-  // let userName = userData?.name || userData?.email;
+  const userData = session.data?.user;
+  let userName = userData?.name || userData?.email;
   // const {cartProducts} = useContext(CartContext);
   // const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  // if (userName && userName.includes(' ')) {
-  //   userName = userName.split(' ')[0];
-  // }
+  if (userName && userName.includes(' ')) {
+    userName = userName.split(' ')[0];
+  }
 
   return (
     <header>
