@@ -27,6 +27,7 @@ export async function PUT(req) {
   return Response.json(true);
 }
 
+             //Fetch users info
 export async function GET(req) {
   mongoose.connect(process.env.MONGO_URL);
 
