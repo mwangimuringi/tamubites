@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
-import { MenuItem } from '../../models/MenuItem';
+import { MenuItem } from '../../../models/MenuItem';
 import { isAdmin } from '../auth/[...nextauth]/route';
 
 // Ensure Mongoose connection is established
