@@ -1,6 +1,6 @@
 "use client";
 import SectionHeaders from "@/components/layout/SectionHeaders";
-import MenuItem from "@/components/menu/MenuItem";
+import { MenuItem } from '../../models/MenuItem';
 import Image from "next/image";
 import { useEffect, useState } from "react";
 

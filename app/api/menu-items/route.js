@@ -1,40 +1,65 @@
-import {isAdmin} from "@/app/api/auth/[...nextauth]/route";
-import {MenuItem} from "@/models/MenuItem";
-import mongoose from "mongoose";
+import { NextResponse } from 'next/server';
+import mongoose from 'mongoose';
+import { MenuItem } from '../../models/MenuItem';
+import { isAdmin } from '../auth/[...nextauth]/route';
+
+// Ensure Mongoose connection is established
+if (mongoose.connections[0].readyState === 0) {
+  mongoose.connect(process.env.MONGO_URL);
+}
 
 export async function POST(req) {
-  mongoose.connect(process.env.MONGO_URL);
-  const data = await req.json();
-  if (await isAdmin()) {
-    const menuItemDoc = await MenuItem.create(data);
-    return Response.json(menuItemDoc);
-  } else {
-    return Response.json({});
+  try {
+    const data = await req.json();
+    if (await isAdmin()) {
+      const menuItemDoc = await MenuItem.create(data);
+      return NextResponse.json(menuItemDoc);
+    } else {
+      return NextResponse.json({ message: 'Not authorized' }, { status: 403 });
+    }
+  } catch (error) {
+    console.error('Error in POST /api/menu-items:', error);
+    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
   }
 }
 
 export async function PUT(req) {
-  mongoose.connect(process.env.MONGO_URL);
-  if (await isAdmin()) {
-    const {_id, ...data} = await req.json();
-    await MenuItem.findByIdAndUpdate(_id, data);
+  try {
+    if (await isAdmin()) {
+      const { _id, ...data } = await req.json();
+      const updatedMenuItem = await MenuItem.findByIdAndUpdate(_id, data, { new: true });
+      return NextResponse.json(updatedMenuItem);
+    } else {
+      return NextResponse.json({ message: 'Not authorized' }, { status: 403 });
+    }
+  } catch (error) {
+    console.error('Error in PUT /api/menu-items:', error);
+    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
   }
-  return Response.json(true);
 }
 
 export async function GET() {
-  mongoose.connect(process.env.MONGO_URL);
-  return Response.json(
-    await MenuItem.find()
-  );
+  try {
+    const menuItems = await MenuItem.find();
+    return NextResponse.json(menuItems);
+  } catch (error) {
+    console.error('Error in GET /api/menu-items:', error);
+    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+  }
 }
 
 export async function DELETE(req) {
-  mongoose.connect(process.env.MONGO_URL);
-  const url = new URL(req.url);
-  const _id = url.searchParams.get('_id');
-  if (await isAdmin()) {
-    await MenuItem.deleteOne({_id});
+  try {
+    const url = new URL(req.url);
+    const _id = url.searchParams.get('_id');
+    if (await isAdmin()) {
+      await MenuItem.deleteOne({ _id });
+      return NextResponse.json({ message: 'Deleted successfully' });
+    } else {
+      return NextResponse.json({ message: 'Not authorized' }, { status: 403 });
+    }
+  } catch (error) {
+    console.error('Error in DELETE /api/menu-items:', error);
+    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
   }
-  return Response.json(true);
 }

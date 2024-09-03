@@ -2,7 +2,7 @@ import clientPromise from "@/libs/mongoConnect";
 import {UserInfo} from "@/models/UserInfo";
 import bcrypt from "bcryptjs";
 import * as mongoose from "mongoose";
-import { User } from "@/app/models/User";
+import { User } from '../../models/User';
 import NextAuth, {getServerSession} from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
