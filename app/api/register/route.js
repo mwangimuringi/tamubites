@@ -1,4 +1,4 @@
-import {User} from "@/models/User";
+import { User } from '../../models/User'; // Adjust the path as needed
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 
