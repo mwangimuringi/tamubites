@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(true);
-  const { loading, data: profile } = useProfile();
+  const { data: profile } = useProfile();
 
   useEffect(() => {
     fetchOrders();
