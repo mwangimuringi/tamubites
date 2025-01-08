@@ -1,6 +1,16 @@
 import Right from "@/components/icons/Right";
 import Image from "next/image";
 
+// Reusable Button Component
+const Button = ({ children, className, ...props }) => (
+  <button
+    className={`flex items-center gap-2 px-4 py-2 rounded-full ${className}`}
+    {...props}
+  >
+    {children}
+  </button>
+);
+
 export default function Hero() {
   return (
     <section className="hero md:mt-4">
@@ -18,20 +28,20 @@ export default function Hero() {
           delicious joy in life
         </p>
         <div className="flex gap-4 text-sm">
-          <button
-            className="flex justify-center bg-primary uppercase items-center gap-2 text-white px-4 py-2 rounded-full"
+          <Button
+            className="bg-primary text-white uppercase"
             aria-label="Order pizza now"
           >
             Order now
             <Right />
-          </button>
-          <button
-            className="flex items-center border-0 gap-2 py-2 text-gray-600 font-semibold"
+          </Button>
+          <Button
+            className="text-gray-600 font-semibold"
             aria-label="Learn more about our pizzas"
           >
             Learn more
             <Right />
-          </button>
+          </Button>
         </div>
       </div>
       <div className="relative hidden md:block">
