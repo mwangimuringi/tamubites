@@ -14,8 +14,8 @@ const Button = ({ children, className, ...props }) => (
 export default function Hero() {
   return (
     <section className="hero md:mt-4">
-      <div className="py-8 md:py-12">
-        <h1 className="text-4xl font-semibold">
+      <div className="py-6 md:py-12">
+        <h1 className="text-3xl md:text-4xl font-semibold">
           Everything
           <br />
           is better
@@ -23,11 +23,11 @@ export default function Hero() {
           with a&nbsp;
           <span className="text-primary">Pizza</span>
         </h1>
-        <p className="my-6 text-gray-500 text-sm">
+        <p className="my-4 text-gray-500 text-xs md:text-sm">
           Pizza is the missing piece that makes every day complete, a simple yet
           delicious joy in life
         </p>
-        <div className="flex gap-4 text-sm">
+        <div className="flex flex-col md:flex-row gap-2 md:gap-4 text-sm">
           <Button
             className="bg-primary text-white uppercase"
             aria-label="Order pizza now"
