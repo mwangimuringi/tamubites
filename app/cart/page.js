@@ -14,7 +14,6 @@ export default function CartPage() {
   const [address, setAddress] = useState({});
   const { data: profileData } = useProfile();
 
-  // Notify user if payment fails
   useEffect(() => {
     if (
       typeof window !== "undefined" &&
@@ -24,7 +23,6 @@ export default function CartPage() {
     }
   }, []);
 
-  // Pre-fill address from profile data
   useEffect(() => {
     if (profileData?.city) {
       const { phone, streetAddress, city, postalCode, country } = profileData;
@@ -32,19 +30,15 @@ export default function CartPage() {
     }
   }, [profileData]);
 
-  // Calculate subtotal
   const calculateSubtotal = () =>
     cartProducts.reduce((sum, product) => sum + cartProductPrice(product), 0);
 
-  // Calculate total (subtotal + delivery fee)
   const calculateTotal = (subtotal) => subtotal + 5;
 
-  // Handle address changes
   function handleAddressChange(propName, value) {
     setAddress((prevAddress) => ({ ...prevAddress, [propName]: value }));
   }
 
-  // Proceed to checkout
   async function proceedToCheckout(event) {
     event.preventDefault();
 
@@ -77,20 +71,22 @@ export default function CartPage() {
 
   if (!cartProducts?.length) {
     return (
-      <section className="mt-8 text-center">
-        <SectionHeaders mainHeader="Cart" />
+      <main className="mt-8 text-center">
+        <header>
+          <SectionHeaders mainHeader="Cart" />
+        </header>
         <p className="mt-4">Your shopping cart is empty 😔</p>
-      </section>
+      </main>
     );
   }
 
   return (
-    <section className="mt-8">
-      <div className="text-center">
+    <main className="mt-8">
+      <header className="text-center">
         <SectionHeaders mainHeader="Cart" />
-      </div>
-      <div className="mt-8 grid gap-8 grid-cols-2">
-        <div>
+      </header>
+      <div className="mt-8 grid gap-8 grid-cols-1 lg:grid-cols-2">
+        <section>
           {cartProducts.map((product, index) => (
             <CartProduct
               key={index}
@@ -98,24 +94,24 @@ export default function CartPage() {
               onRemove={removeCartProduct}
             />
           ))}
-          <div className="py-2 pr-16 flex justify-end items-center">
-            <div className="text-gray-500">
+          <div className="py-2 pr-4 lg:pr-16 flex justify-between items-center">
+            <div className="text-gray-500 text-sm lg:text-base">
               Subtotal:
               <br />
               Delivery:
               <br />
               Total:
             </div>
-            <div className="font-semibold pl-2 text-right">
+            <div className="font-semibold text-right text-sm lg:text-base">
               ${subtotal}
               <br />
               $5
               <br />${total}
             </div>
           </div>
-        </div>
-        <div className="bg-gray-100 p-4 rounded-lg">
-          <h2>Checkout</h2>
+        </section>
+        <section className="bg-gray-100 p-4 rounded-lg">
+          <h2 className="text-lg font-semibold">Checkout</h2>
           <form onSubmit={proceedToCheckout}>
             <AddressInputs
               addressProps={address}
@@ -123,13 +119,14 @@ export default function CartPage() {
             />
             <button
               type="submit"
-              className="mt-4 w-full bg-primary text-white py-2 rounded"
+              aria-label={`Pay ${total} dollars`}
+              className="mt-4 w-full bg-primary text-white py-2 rounded hover:bg-primary-dark focus:ring-2 focus:ring-primary focus:ring-opacity-50"
             >
               Pay ${total}
             </button>
           </form>
-        </div>
+        </section>
       </div>
-    </section>
+    </main>
   );
 }
