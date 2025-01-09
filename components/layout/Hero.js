@@ -1,34 +1,57 @@
 import Right from "@/components/icons/Right";
 import Image from "next/image";
 
+// Reusable Button Component
+const Button = ({ children, className, ...props }) => (
+  <button
+    className={`flex items-center gap-2 px-4 py-2 rounded-full ${className}`}
+    {...props}
+  >
+    {children}
+  </button>
+);
+
 export default function Hero() {
   return (
     <section className="hero md:mt-4">
-      <div className="py-8 md:py-12">
-        <h1 className="text-4xl font-semibold">
-          Everything<br />
-          is better<br />
+      <div className="py-6 md:py-12">
+        <h1 className="text-3xl md:text-4xl font-semibold">
+          Everything
+          <br />
+          is better
+          <br />
           with a&nbsp;
-          <span className="text-primary">
-            Pizza
-          </span>
+          <span className="text-primary">Pizza</span>
         </h1>
-        <p className="my-6 text-gray-500 text-sm">
-          Pizza is the missing piece that makes every day complete, a simple yet delicious joy in life
+        <p className="my-4 text-gray-500 text-xs md:text-sm">
+          Pizza is the missing piece that makes every day complete, a simple yet
+          delicious joy in life
         </p>
-        <div className="flex gap-4 text-sm">
-          <button className="flex justify-center bg-primary uppercase items-center gap-2 text-white px-4 py-2 rounded-full">
+        <div className="flex flex-col md:flex-row gap-2 md:gap-4 text-sm">
+          <Button
+            className="bg-primary text-white uppercase"
+            aria-label="Order pizza now"
+          >
             Order now
             <Right />
-          </button>
-          <button className="flex items-center border-0 gap-2 py-2 text-gray-600 font-semibold">
+          </Button>
+          <Button
+            className="text-gray-600 font-semibold"
+            aria-label="Learn more about our pizzas"
+          >
             Learn more
             <Right />
-          </button>
+          </Button>
         </div>
       </div>
       <div className="relative hidden md:block">
-        <Image src={'/pizza.png'} layout={'fill'} objectFit={'contain'} alt={'pizza'} />
+        <Image
+          src="/pizza.png"
+          fill
+          className="object-contain"
+          alt="pizza"
+          priority
+        />
       </div>
     </section>
   );
