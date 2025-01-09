@@ -1,56 +1,71 @@
+// Reusable InputField Component
+const InputField = ({
+  label,
+  value,
+  placeholder,
+  onChange,
+  disabled,
+  type = "text",
+}) => (
+  <div>
+    <label>{label}</label>
+    <input
+      type={type}
+      placeholder={placeholder}
+      value={value || ""}
+      onChange={onChange}
+      disabled={disabled}
+    />
+  </div>
+);
+
+// Updated AddressInputs Component
 export default function AddressInputs({
   addressProps,
   setAddressProp,
   disabled = false,
 }) {
   const { phone, streetAddress, postalCode, city, country } = addressProps;
+
   return (
     <>
-      <label>Phone</label>
-      <input
-        disabled={disabled}
+      <InputField
+        label="Phone"
         type="tel"
         placeholder="Phone number"
-        value={phone || ""}
+        value={phone}
         onChange={(ev) => setAddressProp("phone", ev.target.value)}
-      />
-      <label>Street address</label>
-      <input
         disabled={disabled}
-        type="text"
+      />
+      <InputField
+        label="Street address"
         placeholder="Street address"
-        value={streetAddress || ""}
+        value={streetAddress}
         onChange={(ev) => setAddressProp("streetAddress", ev.target.value)}
+        disabled={disabled}
       />
       <div className="grid grid-cols-2 gap-2">
-        <div>
-          <label>Postal code</label>
-          <input
-            disabled={disabled}
-            type="text"
-            placeholder="Postal code"
-            value={postalCode || ""}
-            onChange={(ev) => setAddressProp("postalCode", ev.target.value)}
-          />
-        </div>
-        <div>
-          <label>City</label>
-          <input
-            disabled={disabled}
-            type="text"
-            placeholder="City"
-            value={city || ""}
-            onChange={(ev) => setAddressProp("city", ev.target.value)}
-          />
-        </div>
+        <InputField
+          label="Postal code"
+          placeholder="Postal code"
+          value={postalCode}
+          onChange={(ev) => setAddressProp("postalCode", ev.target.value)}
+          disabled={disabled}
+        />
+        <InputField
+          label="City"
+          placeholder="City"
+          value={city}
+          onChange={(ev) => setAddressProp("city", ev.target.value)}
+          disabled={disabled}
+        />
       </div>
-      <label>Country</label>
-      <input
-        disabled={disabled}
-        type="text"
+      <InputField
+        label="Country"
         placeholder="Country"
-        value={country || ""}
+        value={country}
         onChange={(ev) => setAddressProp("country", ev.target.value)}
+        disabled={disabled}
       />
     </>
   );
