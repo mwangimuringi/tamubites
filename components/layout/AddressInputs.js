@@ -1,57 +1,89 @@
+// Reusable InputField Component
+const InputField = ({
+  id,
+  label,
+  value,
+  placeholder,
+  onChange,
+  disabled,
+  type = "text",
+  required = false,
+}) => (
+  <div className="mb-4">
+    <label htmlFor={id} className="block text-sm font-medium text-gray-700">
+      {label}
+      {required && <span className="text-red-500 ml-1">*</span>}
+    </label>
+    <input
+      id={id}
+      type={type}
+      placeholder={placeholder}
+      value={value || ""}
+      onChange={onChange}
+      disabled={disabled}
+      required={required}
+      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+    />
+  </div>
+);
+
+// Updated AddressInputs Component
 export default function AddressInputs({
   addressProps,
   setAddressProp,
   disabled = false,
 }) {
   const { phone, streetAddress, postalCode, city, country } = addressProps;
+
   return (
-    <>
-      <label>Phone</label>
-      <input
-        disabled={disabled}
+    <form className="space-y-4">
+      <InputField
+        id="phone"
+        label="Phone"
         type="tel"
         placeholder="Phone number"
-        value={phone || ""}
+        value={phone}
         onChange={(ev) => setAddressProp("phone", ev.target.value)}
-      />
-      <label>Street address</label>
-      <input
         disabled={disabled}
-        type="text"
+        required
+      />
+      <InputField
+        id="streetAddress"
+        label="Street Address"
         placeholder="Street address"
-        value={streetAddress || ""}
+        value={streetAddress}
         onChange={(ev) => setAddressProp("streetAddress", ev.target.value)}
-      />
-      <div className="grid grid-cols-2 gap-2">
-        <div>
-          <label>Postal code</label>
-          <input
-            disabled={disabled}
-            type="text"
-            placeholder="Postal code"
-            value={postalCode || ""}
-            onChange={(ev) => setAddressProp("postalCode", ev.target.value)}
-          />
-        </div>
-        <div>
-          <label>City</label>
-          <input
-            disabled={disabled}
-            type="text"
-            placeholder="City"
-            value={city || ""}
-            onChange={(ev) => setAddressProp("city", ev.target.value)}
-          />
-        </div>
-      </div>
-      <label>Country</label>
-      <input
         disabled={disabled}
-        type="text"
-        placeholder="Country"
-        value={country || ""}
-        onChange={(ev) => setAddressProp("country", ev.target.value)}
+        required
       />
-    </>
+      <div className="grid grid-cols-2 gap-4">
+        <InputField
+          id="postalCode"
+          label="Postal Code"
+          placeholder="Postal code"
+          value={postalCode}
+          onChange={(ev) => setAddressProp("postalCode", ev.target.value)}
+          disabled={disabled}
+        />
+        <InputField
+          id="city"
+          label="City"
+          placeholder="City"
+          value={city}
+          onChange={(ev) => setAddressProp("city", ev.target.value)}
+          disabled={disabled}
+          required
+        />
+      </div>
+      <InputField
+        id="country"
+        label="Country"
+        placeholder="Country"
+        value={country}
+        onChange={(ev) => setAddressProp("country", ev.target.value)}
+        disabled={disabled}
+        required
+      />
+    </form>
   );
 }
