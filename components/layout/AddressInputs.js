@@ -7,10 +7,12 @@ const InputField = ({
   onChange,
   disabled,
   type = "text",
+  required = false,
 }) => (
   <div className="mb-4">
     <label htmlFor={id} className="block text-sm font-medium text-gray-700">
       {label}
+      {required && <span className="text-red-500 ml-1">*</span>}
     </label>
     <input
       id={id}
@@ -19,6 +21,7 @@ const InputField = ({
       value={value || ""}
       onChange={onChange}
       disabled={disabled}
+      required={required}
       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
     />
   </div>
@@ -42,6 +45,7 @@ export default function AddressInputs({
         value={phone}
         onChange={(ev) => setAddressProp("phone", ev.target.value)}
         disabled={disabled}
+        required
       />
       <InputField
         id="streetAddress"
@@ -50,6 +54,7 @@ export default function AddressInputs({
         value={streetAddress}
         onChange={(ev) => setAddressProp("streetAddress", ev.target.value)}
         disabled={disabled}
+        required
       />
       <div className="grid grid-cols-2 gap-4">
         <InputField
@@ -67,6 +72,7 @@ export default function AddressInputs({
           value={city}
           onChange={(ev) => setAddressProp("city", ev.target.value)}
           disabled={disabled}
+          required
         />
       </div>
       <InputField
@@ -76,6 +82,7 @@ export default function AddressInputs({
         value={country}
         onChange={(ev) => setAddressProp("country", ev.target.value)}
         disabled={disabled}
+        required
       />
     </form>
   );
