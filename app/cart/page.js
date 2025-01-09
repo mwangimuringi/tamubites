@@ -33,10 +33,11 @@ export default function CartPage() {
   }, [profileData]);
 
   // Calculate subtotal
-  let subtotal = 0;
-  for (const product of cartProducts) {
-    subtotal += cartProductPrice(product);
-  }
+  const calculateSubtotal = () =>
+    cartProducts.reduce((sum, product) => sum + cartProductPrice(product), 0);
+
+  // Calculate total (subtotal + delivery fee)
+  const calculateTotal = (subtotal) => subtotal + 5;
 
   // Handle address changes
   function handleAddressChange(propName, value) {
@@ -70,6 +71,9 @@ export default function CartPage() {
       error: "Something went wrong... Please try again later",
     });
   }
+
+  const subtotal = calculateSubtotal();
+  const total = calculateTotal(subtotal);
 
   if (!cartProducts?.length) {
     return (
@@ -106,7 +110,7 @@ export default function CartPage() {
               ${subtotal}
               <br />
               $5
-              <br />${subtotal + 5}
+              <br />${total}
             </div>
           </div>
         </div>
@@ -121,7 +125,7 @@ export default function CartPage() {
               type="submit"
               className="mt-4 w-full bg-primary text-white py-2 rounded"
             >
-              Pay ${subtotal + 5}
+              Pay ${total}
             </button>
           </form>
         </div>
