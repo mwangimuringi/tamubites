@@ -34,7 +34,10 @@ export async function POST(req) {
     const { name } = await req.json();
     if (await isAdmin()) {
       const categoryDoc = await Category.create({ name });
-      return Response.json(categoryDoc);
+      return Response.json({
+        message: "Category created successfully",
+        category: categoryDoc
+      });
     } else {
       return Response.json({ message: "Unauthorized" }, { status: 403 });
     }
