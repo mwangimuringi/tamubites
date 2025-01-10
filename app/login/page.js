@@ -8,7 +8,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loginInProgress, setLoginInProgress] = useState(false);
   const [error, setError] = useState("");
-  const [callbackUrl, setCallbackUrl] = useState("/"); // Dynamically set callback URL
+  const [callbackUrl, setCallbackUrl] = useState("/");  // Dynamically set callback URL
 
   useEffect(() => {
     // Logic to set callbackUrl based on the login source
@@ -27,11 +27,7 @@ export default function LoginPage() {
     }
 
     setLoginInProgress(true);
-    const result = await signIn("credentials", {
-      email,
-      password,
-      callbackUrl,
-    });
+    const result = await signIn("credentials", { email, password, callbackUrl });
 
     if (result?.error) {
       setError("Invalid email or password.");
