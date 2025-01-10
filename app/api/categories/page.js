@@ -1,4 +1,4 @@
-import { isAdmin } from '../auth/[...nextauth]/route';
+import { isAdmin } from "../auth/[...nextauth]/route";
 import { Category } from "@/models/Category";
 import mongoose from "mongoose";
 
@@ -15,42 +15,71 @@ async function connectToDatabase() {
     isConnected = true;
     console.log("Connected to database");
   } catch (error) {
-    console.error("Database connection error:", error);
-    throw new Error("Database connection failed");
+    handleError(error); 
   }
 }
 
+// Error handling utility function
+function handleError(error) {
+  console.error("Error:", error);
+  return Response.json(
+    { message: error.message || "An error occurred" },
+    { status: 500 }
+  );
+}
+
 export async function POST(req) {
-  await connectToDatabase();  // Using the singleton connection
-  const { name } = await req.json();
-  if (await isAdmin()) {
-    const categoryDoc = await Category.create({ name });
-    return Response.json(categoryDoc);
-  } else {
-    return Response.json({});
+  try {
+    await connectToDatabase(); 
+    const { name } = await req.json();
+    if (await isAdmin()) {
+      const categoryDoc = await Category.create({ name });
+      return Response.json(categoryDoc);
+    } else {
+      return Response.json({ message: "Unauthorized" }, { status: 403 });
+    }
+  } catch (error) {
+    return handleError(error); 
   }
 }
 
 export async function PUT(req) {
-  await connectToDatabase();  // Using the singleton connection
-  const { _id, name } = await req.json();
-  if (await isAdmin()) {
-    await Category.updateOne({ _id }, { name });
+  try {
+    await connectToDatabase(); 
+    const { _id, name } = await req.json();
+    if (await isAdmin()) {
+      await Category.updateOne({ _id }, { name });
+      return Response.json({ message: "Category updated successfully" });
+    } else {
+      return Response.json({ message: "Unauthorized" }, { status: 403 });
+    }
+  } catch (error) {
+    return handleError(error);
   }
-  return Response.json(true);
 }
 
 export async function GET() {
-  await connectToDatabase();  // Using the singleton connection
-  return Response.json(await Category.find());
+  try {
+    await connectToDatabase(); 
+    const categories = await Category.find();
+    return Response.json(categories);
+  } catch (error) {
+    return handleError(error); 
+  }
 }
 
 export async function DELETE(req) {
-  await connectToDatabase();  // Using the singleton connection
-  const url = new URL(req.url);
-  const _id = url.searchParams.get('_id');
-  if (await isAdmin()) {
-    await Category.deleteOne({ _id });
+  try {
+    await connectToDatabase(); 
+    const url = new URL(req.url);
+    const _id = url.searchParams.get("_id");
+    if (await isAdmin()) {
+      await Category.deleteOne({ _id });
+      return Response.json({ message: "Category deleted successfully" });
+    } else {
+      return Response.json({ message: "Unauthorized" }, { status: 403 });
+    }
+  } catch (error) {
+    return handleError(error); 
   }
-  return Response.json(true);
 }
