@@ -73,9 +73,9 @@ export async function GET() {
 
 export async function DELETE(req) {
   try {
-    await connectToDatabase(); 
+    await connectToDatabase();  // Using the singleton connection
     const url = new URL(req.url);
-    const _id = url.searchParams.get("_id");
+    const _id = url.searchParams.get('_id');
     if (await isAdmin()) {
       await Category.deleteOne({ _id });
       return Response.json({ message: "Category deleted successfully" });
@@ -83,6 +83,6 @@ export async function DELETE(req) {
       return Response.json({ message: "Unauthorized" }, { status: 403 });
     }
   } catch (error) {
-    return handleError(error); 
+    return handleError(error);  // Handling errors consistently
   }
 }
