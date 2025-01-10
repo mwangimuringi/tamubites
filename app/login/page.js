@@ -1,13 +1,22 @@
 "use client";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginInProgress, setLoginInProgress] = useState(false);
   const [error, setError] = useState("");
+  const [callbackUrl, setCallbackUrl] = useState("/"); // Dynamically set callback URL
+
+  useEffect(() => {
+    // Logic to set callbackUrl based on the login source
+    const url = new URL(window.location.href);
+    if (url.searchParams.has("redirect")) {
+      setCallbackUrl(url.searchParams.get("redirect"));
+    }
+  }, []);
 
   async function handleFormSubmit(ev) {
     ev.preventDefault();
@@ -21,7 +30,7 @@ export default function LoginPage() {
     const result = await signIn("credentials", {
       email,
       password,
-      callbackUrl: "/",
+      callbackUrl,
     });
 
     if (result?.error) {
@@ -59,9 +68,9 @@ export default function LoginPage() {
           or login with provider
         </div>
         <button
-          disabled={loginInProgress} // Disable the button during login process
+          disabled={loginInProgress}
           type="button"
-          onClick={() => signIn("google", { callbackUrl: "/" })}
+          onClick={() => signIn("google", { callbackUrl })}
           className="flex gap-4 justify-center"
         >
           <Image src={"/google.png"} alt={""} width={24} height={24} />
