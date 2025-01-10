@@ -59,6 +59,7 @@ export default function LoginPage() {
           or login with provider
         </div>
         <button
+          disabled={loginInProgress} // Disable the button during login process
           type="button"
           onClick={() => signIn("google", { callbackUrl: "/" })}
           className="flex gap-4 justify-center"
