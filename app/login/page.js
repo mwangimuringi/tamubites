@@ -8,7 +8,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loginInProgress, setLoginInProgress] = useState(false);
   const [error, setError] = useState("");
-  const [callbackUrl, setCallbackUrl] = useState("/");  // Dynamically set callback URL
+  const [callbackUrl, setCallbackUrl] = useState("/"); // Dynamically set callback URL
 
   useEffect(() => {
     // Logic to set callbackUrl based on the login source
@@ -27,7 +27,11 @@ export default function LoginPage() {
     }
 
     setLoginInProgress(true);
-    const result = await signIn("credentials", { email, password, callbackUrl });
+    const result = await signIn("credentials", {
+      email,
+      password,
+      callbackUrl,
+    });
 
     if (result?.error) {
       setError("Invalid email or password.");
@@ -47,6 +51,7 @@ export default function LoginPage() {
           value={email}
           disabled={loginInProgress}
           onChange={(ev) => setEmail(ev.target.value)}
+          className="w-full p-2 mb-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
         />
         <input
           type="password"
@@ -55,9 +60,14 @@ export default function LoginPage() {
           value={password}
           disabled={loginInProgress}
           onChange={(ev) => setPassword(ev.target.value)}
+          className="w-full p-2 mb-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
         />
         {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
-        <button disabled={loginInProgress} type="submit">
+        <button
+          disabled={loginInProgress}
+          type="submit"
+          className="w-full py-2 mt-4 bg-primary text-white rounded focus:outline-none focus:ring-2 focus:ring-primary"
+        >
           Login
         </button>
         <div className="my-4 text-center text-gray-500">
@@ -67,7 +77,7 @@ export default function LoginPage() {
           disabled={loginInProgress}
           type="button"
           onClick={() => signIn("google", { callbackUrl })}
-          className="flex gap-4 justify-center"
+          className="w-full py-2 mt-4 bg-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-primary flex gap-4 justify-center"
         >
           <Image src={"/google.png"} alt={""} width={24} height={24} />
           Login with google
