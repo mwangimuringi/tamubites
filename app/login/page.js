@@ -7,15 +7,21 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginInProgress, setLoginInProgress] = useState(false);
+  const [error, setError] = useState(""); // New state for error message
 
   async function handleFormSubmit(ev) {
     ev.preventDefault();
+    setError(""); // Reset error message
+    if (!email || !password) {
+      setError("Email and password are required.");
+      return;
+    }
+
     setLoginInProgress(true);
-
     await signIn("credentials", { email, password, callbackUrl: "/" });
-
     setLoginInProgress(false);
   }
+
   return (
     <section className="mt-8">
       <h1 className="text-center text-primary text-4xl mb-4">Login</h1>
@@ -36,6 +42,8 @@ export default function LoginPage() {
           disabled={loginInProgress}
           onChange={(ev) => setPassword(ev.target.value)}
         />
+        {error && <div className="text-red-500 text-sm mt-2">{error}</div>}{" "}
+        {/* Display error message */}
         <button disabled={loginInProgress} type="submit">
           Login
         </button>
