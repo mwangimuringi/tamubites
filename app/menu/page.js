@@ -42,7 +42,9 @@ export default function MenuPage() {
             <div className="grid sm:grid-cols-3 gap-4 mt-6 mb-12">
               {/* Loading state for menu items */}
               {loadingMenuItems ? (
-                <div className="text-center col-span-3">Loading menu items...</div>
+                <div className="text-center col-span-3">
+                  Loading menu items...
+                </div>
               ) : (
                 menuItems
                   .filter((item) => item.category === category._id)
