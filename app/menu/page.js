@@ -1,7 +1,10 @@
 "use client";
 import SectionHeaders from "@/components/layout/SectionHeaders";
 import { MenuItem } from "../../models/MenuItem";
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
+
+// Memoized MenuItem component
+const MemoizedMenuItem = memo(MenuItem);
 
 export default function MenuPage() {
   const [categories, setCategories] = useState([]);
@@ -43,7 +46,7 @@ export default function MenuPage() {
               ) : (
                 menuItems
                   .filter((item) => item.category === category._id)
-                  .map((item) => <MenuItem key={item._id} {...item} />)
+                  .map((item) => <MemoizedMenuItem key={item._id} {...item} />)
               )}
             </div>
           </div>
