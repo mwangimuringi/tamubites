@@ -12,18 +12,43 @@ export default function MenuPage() {
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [loadingMenuItems, setLoadingMenuItems] = useState(true);
 
+  // Function to validate categories
+  const validateCategories = (data) => {
+    return Array.isArray(data) && data.every((item) => item._id && item.name);
+  };
+
+  // Function to validate menu items
+  const validateMenuItems = (data) => {
+    return (
+      Array.isArray(data) &&
+      data.every((item) => item._id && item.category && item.name)
+    );
+  };
+
   useEffect(() => {
     // Fetch categories
     fetch("/api/categories")
       .then((res) => res.json())
-      .then((categories) => setCategories(categories))
+      .then((categories) => {
+        if (validateCategories(categories)) {
+          setCategories(categories);
+        } else {
+          console.error("Invalid categories data:", categories);
+        }
+      })
       .catch((err) => console.error("Failed to fetch categories:", err))
       .finally(() => setLoadingCategories(false));
 
     // Fetch menu items
     fetch("/api/menu-items")
       .then((res) => res.json())
-      .then((menuItems) => setMenuItems(menuItems))
+      .then((menuItems) => {
+        if (validateMenuItems(menuItems)) {
+          setMenuItems(menuItems);
+        } else {
+          console.error("Invalid menu items data:", menuItems);
+        }
+      })
       .catch((err) => console.error("Failed to fetch menu items:", err))
       .finally(() => setLoadingMenuItems(false));
   }, []);
