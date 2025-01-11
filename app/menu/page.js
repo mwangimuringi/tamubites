@@ -6,14 +6,19 @@ import { useEffect, useState } from "react";
 export default function MenuPage() {
   const [categories, setCategories] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
+
   useEffect(() => {
-    fetch("/api/categories").then((res) => {
-      res.json().then((categories) => setCategories(categories));
-    });
-    fetch("/api/menu-items").then((res) => {
-      res.json().then((menuItems) => setMenuItems(menuItems));
-    });
+    fetch("/api/categories")
+      .then((res) => res.json())
+      .then((categories) => setCategories(categories))
+      .catch((err) => console.error("Failed to fetch categories:", err));
+    
+    fetch("/api/menu-items")
+      .then((res) => res.json())
+      .then((menuItems) => setMenuItems(menuItems))
+      .catch((err) => console.error("Failed to fetch menu items:", err));
   }, []);
+
   return (
     <section className="mt-8">
       {categories?.length > 0 &&
