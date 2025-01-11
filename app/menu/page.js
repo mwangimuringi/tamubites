@@ -11,6 +11,8 @@ export default function MenuPage() {
   const [menuItems, setMenuItems] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [loadingMenuItems, setLoadingMenuItems] = useState(true);
+  const [invalidCategories, setInvalidCategories] = useState(false);
+  const [invalidMenuItems, setInvalidMenuItems] = useState(false);
 
   // Function to validate categories
   const validateCategories = (data) => {
@@ -34,9 +36,13 @@ export default function MenuPage() {
           setCategories(categories);
         } else {
           console.error("Invalid categories data:", categories);
+          setInvalidCategories(true);
         }
       })
-      .catch((err) => console.error("Failed to fetch categories:", err))
+      .catch((err) => {
+        console.error("Failed to fetch categories:", err);
+        setInvalidCategories(true);
+      })
       .finally(() => setLoadingCategories(false));
 
     // Fetch menu items
@@ -47,9 +53,13 @@ export default function MenuPage() {
           setMenuItems(menuItems);
         } else {
           console.error("Invalid menu items data:", menuItems);
+          setInvalidMenuItems(true);
         }
       })
-      .catch((err) => console.error("Failed to fetch menu items:", err))
+      .catch((err) => {
+        console.error("Failed to fetch menu items:", err);
+        setInvalidMenuItems(true);
+      })
       .finally(() => setLoadingMenuItems(false));
   }, []);
 
@@ -58,6 +68,10 @@ export default function MenuPage() {
       {/* Loading state for categories */}
       {loadingCategories ? (
         <div className="text-center">Loading categories...</div>
+      ) : invalidCategories ? (
+        <div className="text-center text-red-500">
+          Failed to load categories. Please try again later.
+        </div>
       ) : categories.length > 0 ? (
         categories.map((category) => (
           <div key={category._id}>
@@ -69,6 +83,10 @@ export default function MenuPage() {
               {loadingMenuItems ? (
                 <div className="text-center col-span-3">
                   Loading menu items...
+                </div>
+              ) : invalidMenuItems ? (
+                <div className="text-center col-span-3 text-red-500">
+                  Failed to load menu items. Please try again later.
                 </div>
               ) : (
                 menuItems
@@ -84,4 +102,3 @@ export default function MenuPage() {
     </section>
   );
 }
-
