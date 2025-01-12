@@ -21,13 +21,17 @@ export default function EditMenuItemPage() {
       try {
         const response = await fetch("/api/menu-items");
         if (!response.ok) {
-          throw new Error("Failed to fetch menu items");
+          throw new Error(
+            `Failed to fetch menu items: ${response.status} ${response.statusText}`
+          );
         }
         const items = await response.json();
         const item = items.find((i) => i._id === id);
         setMenuItem(item);
       } catch (error) {
         console.error("Error fetching menu items:", error);
+        // Display a user-friendly error message to the user
+        toast.error("Failed to load menu item. Please try again later.");
       }
     };
 
@@ -44,7 +48,9 @@ export default function EditMenuItemPage() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to save item");
+        throw new Error(
+          `Failed to save item: ${response.status} ${response.statusText}`
+        );
       }
 
       await toast.promise(Promise.resolve(), {
@@ -65,7 +71,9 @@ export default function EditMenuItemPage() {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to delete item");
+        throw new Error(
+          `Failed to delete item: ${res.status} ${response.statusText}`
+        );
       }
 
       await toast.promise(Promise.resolve(), {
