@@ -6,6 +6,7 @@ import { useProfile } from "@/components/UseProfile";
 import Link from "next/link";
 import { useRouter } from "next/router"; // Import useRouter
 import toast from "react-hot-toast";
+import * as Yup from 'yup';
 
 export default function NewMenuItemPage() {
   const router = useRouter(); // Initialize router
@@ -23,6 +24,13 @@ if (!response.ok) {
 } else {
   resolve();
 }
+
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required('Name is required'),
+  price: Yup.number().required('Price is required').min(0, 'Price must be a positive number'),
+  // Add other fields as needed
+});
+
   async function handleFormSubmit(ev, data) {
     ev.preventDefault();
     const savingPromise = new Promise(async (resolve, reject) => {
