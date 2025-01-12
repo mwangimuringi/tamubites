@@ -8,6 +8,28 @@ import { useRouter } from "next/router"; // Import useRouter
 import toast from "react-hot-toast";
 import * as Yup from 'yup';
 
+const [isSaving, setIsSaving] = useState(false);
+
+async function handleFormSubmit(ev, data) {
+  ev.preventDefault();
+  setIsSaving(true);
+
+  try {
+    await toast.promise(/* Fetch logic here */);
+    router.push('/menu-items');
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setIsSaving(false);
+  }
+}
+
+// In the form component:
+<button type="submit" disabled={isSaving}>
+  {isSaving ? 'Saving...' : 'Submit'}
+</button>
+
+
 export default function NewMenuItemPage() {
   const router = useRouter(); // Initialize router
   const { loading, data } = useProfile();
