@@ -8,9 +8,17 @@ import { useRouter } from "next/router"; // Import useRouter
 import toast from "react-hot-toast";
 import * as Yup from 'yup';
 
+import { FormEvent, useState } from 'react';
+
+interface MenuItemFormData {
+  name: string;
+  price: number;
+  description?: string;
+}
+
 const [isSaving, setIsSaving] = useState(false);
 
-async function handleFormSubmit(ev, data) {
+async function handleFormSubmit(ev: FormEvent, data: MenuItemFormData) {
   ev.preventDefault();
   setIsSaving(true);
 
