@@ -11,6 +11,18 @@ export default function NewMenuItemPage() {
   const router = useRouter(); // Initialize router
   const { loading, data } = useProfile();
 
+  3. Enhance Error Handling
+
+Include detailed error messages for fetch failures to help debug or inform users.
+
+const response = await fetch('/api/menu-items', { ... });
+if (!response.ok) {
+  const error = await response.json();
+  toast.error(error.message || 'Failed to save item');
+  reject(new Error(error.message));
+} else {
+  resolve();
+}
   async function handleFormSubmit(ev, data) {
     ev.preventDefault();
     const savingPromise = new Promise(async (resolve, reject) => {
