@@ -37,7 +37,7 @@ export default function EditMenuItemPage() {
     fetchData();
   }, [id]); // Only re-fetch when `id` changes
 
-  async function handleFormSubmit(ev, data) {
+  const handleFormSubmit = async (ev, data) => {
     ev.preventDefault();
     try {
       const response = await fetch("/api/menu-items", {
@@ -61,9 +61,9 @@ export default function EditMenuItemPage() {
     } catch (error) {
       await toast.error("Error saving item: " + error.message);
     }
-  }
+  };
 
-  async function handleDeleteClick() {
+  const handleDeleteClick = async () => {
     try {
       const res = await fetch(`/api/menu-items?_id=${id}`, {
         method: "DELETE",
@@ -84,7 +84,7 @@ export default function EditMenuItemPage() {
     } catch (error) {
       await toast.error("Error deleting item: " + error.message);
     }
-  }
+  };
 
   if (redirectToItems) {
     return redirect("/menu-items");
