@@ -1,6 +1,6 @@
 "use client";
 
-import DeleteButton from "@/components/DeleteButton"; // Import DeleteButton component
+import DeleteButton from "@/components/DeleteButton";
 import Left from "@/components/icons/Left";
 import UserTabs from "@/components/layout/UserTabs";
 import { useProfile } from "@/components/UseProfile";
@@ -47,7 +47,6 @@ export default function EditMenuItemPage() {
         throw new Error("Failed to save item");
       }
 
-      // Simplified success handling
       await toast.promise(Promise.resolve(), {
         loading: "Saving this tasty item",
         success: "Saved",
