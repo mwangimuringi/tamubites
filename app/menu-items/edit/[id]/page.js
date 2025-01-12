@@ -30,7 +30,6 @@ export default function EditMenuItemPage() {
         setMenuItem(item);
       } catch (error) {
         console.error("Error fetching menu items:", error);
-        // Display a user-friendly error message to the user
         toast.error("Failed to load menu item. Please try again later.");
       }
     };
