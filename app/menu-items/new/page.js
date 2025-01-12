@@ -1,90 +1,46 @@
-"use client";
-import Left from "@/components/icons/Left";
-import MenuItemForm from "@/components/layout/MenuItemForm";
-import UserTabs from "@/components/layout/UserTabs";
-import { useProfile } from "@/components/UseProfile";
-import Link from "next/link";
-import { useRouter } from "next/router"; // Import useRouter
+import { useRouter } from "next/router";
+import { useState } from "react";
 import toast from "react-hot-toast";
-import * as Yup from 'yup';
-
-import { FormEvent, useState } from 'react';
-
-interface MenuItemFormData {
-  name: string;
-  price: number;
-  description?: string;
-}
-
-const [isSaving, setIsSaving] = useState(false);
-
-async function handleFormSubmit(ev: FormEvent, data: MenuItemFormData) {
-  ev.preventDefault();
-  setIsSaving(true);
-
-  try {
-    await toast.promise(/* Fetch logic here */);
-    router.push('/menu-items');
-  } catch (error) {
-    console.error(error);
-  } finally {
-    setIsSaving(false);
-  }
-}
-
-// In the form component:
-<button type="submit" disabled={isSaving}>
-  {isSaving ? 'Saving...' : 'Submit'}
-</button>
-
+import UserTabs from "@/components/layout/UserTabs";
+import MenuItemForm from "@/components/layout/MenuItemForm";
+import Left from "@/components/icons/Left";
+import Link from "next/link";
+import { useProfile } from "@/components/UseProfile";
 
 export default function NewMenuItemPage() {
-  const router = useRouter(); // Initialize router
+  const router = useRouter();
   const { loading, data } = useProfile();
+  const [isSaving, setIsSaving] = useState(false);
 
-  3. Enhance Error Handling
-
-Include detailed error messages for fetch failures to help debug or inform users.
-
-const response = await fetch('/api/menu-items', { ... });
-if (!response.ok) {
-  const error = await response.json();
-  toast.error(error.message || 'Failed to save item');
-  reject(new Error(error.message));
-} else {
-  resolve();
-}
-
-const validationSchema = Yup.object().shape({
-  name: Yup.string().required('Name is required'),
-  price: Yup.number().required('Price is required').min(0, 'Price must be a positive number'),
-  // Add other fields as needed
-});
+  if (loading) return <p>Loading user info...</p>;
+  if (!data?.admin) return <p>Not authorized to access this page.</p>;
 
   async function handleFormSubmit(ev, data) {
     ev.preventDefault();
-    const savingPromise = new Promise(async (resolve, reject) => {
-      const response = await fetch("/api/menu-items", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" },
-      });
-      if (response.ok) resolve();
-      else reject();
-    });
+    setIsSaving(true);
 
-    await toast.promise(savingPromise, {
-      loading: "Saving this tasty item",
-      success: "Saved",
-      error: "Error",
-    });
-
-    router.push("/menu-items"); // Redirect using router
+    try {
+      await toast.promise(
+        fetch("/api/menu-items", {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: { "Content-Type": "application/json" },
+        }).then((res) => {
+          if (!res.ok) throw new Error("Failed to save");
+        }),
+        {
+          loading: "Saving this tasty item",
+          success: "Saved!",
+          error: "Error saving item",
+        }
+      );
+      router.push("/menu-items");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsSaving(false);
+    }
   }
-
-  // Streamlined conditional rendering
-  if (loading) return <p>Loading user info...</p>;
-  if (!data?.admin) return <p>Not an admin.</p>;
 
   return (
     <section className="mt-8">
@@ -95,7 +51,11 @@ const validationSchema = Yup.object().shape({
           <span>Show all menu items</span>
         </Link>
       </div>
-      <MenuItemForm menuItem={null} onSubmit={handleFormSubmit} />
+      <MenuItemForm
+        menuItem={null}
+        onSubmit={handleFormSubmit}
+        isSaving={isSaving}
+      />
     </section>
   );
 }
