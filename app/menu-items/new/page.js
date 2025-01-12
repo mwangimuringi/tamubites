@@ -1,63 +1,61 @@
-'use client';
-import Left from "@/components/icons/Left";
-import MenuItemForm from "@/components/layout/MenuItemForm";
-import UserTabs from "@/components/layout/UserTabs";
-import {useProfile} from "@/components/UseProfile";
-import Link from "next/link";
-import {redirect} from "next/navigation";
-import {useState} from "react";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import toast from "react-hot-toast";
+import UserTabs from "@/components/layout/UserTabs";
+import MenuItemForm from "@/components/layout/MenuItemForm";
+import Left from "@/components/icons/Left";
+import Link from "next/link";
+import { useProfile } from "@/components/UseProfile";
 
 export default function NewMenuItemPage() {
+  const router = useRouter();
+  const { loading, data } = useProfile();
+  const [isSaving, setIsSaving] = useState(false);
 
-  const [redirectToItems, setRedirectToItems] = useState(false);
-  const {loading, data} = useProfile();
+  if (loading) return <p>Loading user info...</p>;
+  if (!data?.admin) return <p>Not authorized to access this page.</p>;
 
   async function handleFormSubmit(ev, data) {
     ev.preventDefault();
-    const savingPromise = new Promise(async (resolve, reject) => {
-      const response = await fetch('/api/menu-items', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json' },
-      });
-      if (response.ok)
-        resolve();
-      else
-        reject();
-    });
+    setIsSaving(true);
 
-    await toast.promise(savingPromise, {
-      loading: 'Saving this tasty item',
-      success: 'Saved',
-      error: 'Error',
-    });
-
-    setRedirectToItems(true);
-  }
-
-  if (redirectToItems) {
-    return redirect('/menu-items');
-  }
-
-  if (loading) {
-    return 'Loading user info...';
-  }
-
-  if (!data.admin) {
-    return 'Not an admin.';
+    try {
+      await toast.promise(
+        fetch("/api/menu-items", {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: { "Content-Type": "application/json" },
+        }).then((res) => {
+          if (!res.ok) throw new Error("Failed to save");
+        }),
+        {
+          loading: "Saving this tasty item",
+          success: "Saved!",
+          error: "Error saving item",
+        }
+      );
+      router.push("/menu-items");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   return (
     <section className="mt-8">
       <UserTabs isAdmin={true} />
       <div className="max-w-2xl mx-auto mt-8">
-        <Link href={'/menu-items'} className="button">
+        <Link href="/menu-items" className="button">
           <Left />
           <span>Show all menu items</span>
         </Link>
       </div>
-      <MenuItemForm menuItem={null} onSubmit={handleFormSubmit} />
+      <MenuItemForm
+        menuItem={null}
+        onSubmit={handleFormSubmit}
+        isSaving={isSaving}
+      />
     </section>
   );
 }
