@@ -1,16 +1,18 @@
-import { useContext, useEffect } from "react";
-import { CartContext } from "@/components/AppContext";
+import { cartProductPrice } from "@/components/AppContext";
 
 export default function OrderPage() {
-  const { clearCart } = useContext(CartContext);
+  const [order, setOrder] = useState();
 
-  useEffect(() => {
-    if (typeof window.console !== "undefined") {
-      if (window.location.href.includes("clear-cart=1")) {
-        clearCart();
-      }
+  let subtotal = 0;
+  if (order?.cartProducts) {
+    for (const product of order.cartProducts) {
+      subtotal += cartProductPrice(product);
     }
-  }, []);
+  }
 
-  return <section>Order Page with cart clearing logic.</section>;
+  return (
+    <section>
+      <div>Subtotal: ${subtotal}</div>
+    </section>
+  );
 }
