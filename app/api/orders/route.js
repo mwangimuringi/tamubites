@@ -1,5 +1,3 @@
-import { isAdmin } from "@/app/api/auth/[...nextauth]/route";
-
 export async function GET(req) {
   mongoose.connect(process.env.MONGO_URL);
 
@@ -11,7 +9,11 @@ export async function GET(req) {
   const _id = url.searchParams.get("_id");
 
   if (_id) {
-    return Response.json(await Order.findById(_id));
+    const order = await Order.findById(_id);
+    if (order && (admin || order.userEmail === userEmail)) {
+      return Response.json(order);
+    }
+    return new Response("Forbidden", { status: 403 });
   }
 
   if (admin) {
