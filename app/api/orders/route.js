@@ -12,21 +12,32 @@ export async function GET(req) {
     if (_id) {
       const order = await Order.findById(_id);
       if (order && (admin || order.userEmail === userEmail)) {
-        return Response.json(order);
+        return Response.json({ success: true, order });
       }
-      return new Response("Forbidden", { status: 403 });
+      return new Response(
+        JSON.stringify({ success: false, message: "Forbidden" }),
+        { status: 403 }
+      );
     }
 
     if (admin) {
-      return Response.json(await Order.find());
+      const orders = await Order.find();
+      return Response.json({ success: true, orders });
     }
 
     if (userEmail) {
-      return Response.json(await Order.find({ userEmail }));
+      const userOrders = await Order.find({ userEmail });
+      return Response.json({ success: true, orders: userOrders });
     }
 
-    return new Response("Unauthorized", { status: 401 });
+    return new Response(
+      JSON.stringify({ success: false, message: "Unauthorized" }),
+      { status: 401 }
+    );
   } catch (error) {
-    return new Response("Internal Server Error", { status: 500 });
+    return new Response(
+      JSON.stringify({ success: false, message: "Internal Server Error" }),
+      { status: 500 }
+    );
   }
 }
