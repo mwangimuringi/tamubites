@@ -1,5 +1,6 @@
 "use client";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export default function LoginPage() {
@@ -65,6 +66,15 @@ export default function LoginPage() {
           className="w-full py-2 mt-4 bg-primary text-white rounded"
         >
           Login
+        </button>
+        <div className="my-4 text-center text-gray-500">or login with provider</div>
+        <button
+          type="button"
+          onClick={() => signIn("google", { callbackUrl })}
+          className="w-full py-2 mt-4 bg-gray-200 rounded flex gap-4 justify-center"
+        >
+          <Image src="/google.png" alt="" width={24} height={24} />
+          Login with Google
         </button>
       </form>
     </section>
