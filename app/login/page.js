@@ -67,7 +67,9 @@ export default function LoginPage() {
         >
           Login
         </button>
-        <div className="my-4 text-center text-gray-500">or login with provider</div>
+        <div className="my-4 text-center text-gray-500">
+          or login with provider
+        </div>
         <button
           type="button"
           onClick={() => signIn("google", { callbackUrl })}
