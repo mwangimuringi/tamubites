@@ -25,12 +25,7 @@ export default function LoginPage() {
       return;
     }
 
-    setLoginInProgress(true);
-    const result = await signIn("credentials", {
-      email,
-      password,
-      callbackUrl,
-    });
+    
 
     if (result?.error) {
       setError("Invalid email or password.");
