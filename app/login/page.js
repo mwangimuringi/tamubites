@@ -10,6 +10,12 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [callbackUrl, setCallbackUrl] = useState("/");
 
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (url.searchParams.has("redirect")) {
+      setCallbackUrl(url.searchParams.get("redirect"));
+    }
+  }, []);
 
   async function handleFormSubmit(ev) {
     ev.preventDefault();
