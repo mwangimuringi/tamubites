@@ -17,7 +17,13 @@ export default function LoginPage() {
     }
   }, []);
 
-
+  async function handleFormSubmit(ev) {
+    ev.preventDefault();
+    setError("");
+    if (!email || !password) {
+      setError("Email and password are required.");
+      return;
+    }
 
     setLoginInProgress(true);
     const result = await signIn("credentials", {
