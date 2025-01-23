@@ -23,6 +23,12 @@ export default function CartProduct({product,onRemove}) {
               <div key={extra.name}>{extra.name} ${extra.price}</div>
             ))}
           </div>
+
+          // <div className="text-sm">
+          //   {product.extras.map(extra => (
+          //     <div key={extra.name}>{extra.name} ${extra.price}</div>
+          //   ))}
+          // </div>
         )}
       </div>
       <div className="text-lg font-semibold">
