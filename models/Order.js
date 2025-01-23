@@ -12,8 +12,3 @@ const OrderSchema = new Schema({
 }, {timestamps: true});
 
 export const Order = models?.Order || model('Order', OrderSchema);
-
-// export const Order = model('Order', OrderSchema);
-const Orders = model('Orders', OrderSchema);
-
-export default Orders;
