@@ -82,3 +82,9 @@ export async function POST(req) {
 
   return Response.json(stripeSession.url);
 }
+
+export async function POST(request: Request) {
+  const { sessionId } = await request.json();
+  const stripeSession = await stripe.checkout.sessions.retrieve(sessionId);
+  return Response.json(stripeSession);
+}
