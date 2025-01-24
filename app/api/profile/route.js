@@ -74,3 +74,10 @@ async function connectToDatabase() {
       });
   }
 }
+const user = await User.findOne(filter);
+if (!user) {
+    return Response.json(
+        { error: "User not found." },
+        { status: 404 }
+    );
+}
