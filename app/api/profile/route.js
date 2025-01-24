@@ -10,13 +10,19 @@ export async function PUT(req) {
   const { _id, name, image, ...otherUserInfo } = data;
 
   let filter = {};
-  if (_id) {
+if (_id) {
     filter = { _id };
-  } else {
+} else {
     const session = await getServerSession(authOptions);
-    const email = session.user.email;
+    const email = session?.user?.email;
+    if (!email) {
+        return Response.json(
+            { error: "Unauthorized: Session not found." },
+            { status: 401 }
+        );
+    }
     filter = { email };
-  }
+}
 
   const user = await User.findOne(filter);
   await User.updateOne(filter, { name, image });
