@@ -51,3 +51,13 @@ export async function GET(req) {
 
   return Response.json({ ...user, ...userInfo });
 }
+
+// Centralized database connection
+async function connectToDatabase() {
+  if (mongoose.connection.readyState === 0) {
+      await mongoose.connect(process.env.MONGO_URL, {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+      });
+  }
+}
