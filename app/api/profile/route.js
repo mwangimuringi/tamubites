@@ -24,6 +24,13 @@ export async function PUT(req) {
     upsert: true,
   });
 
+  if (!name || !image) {
+    return Response.json(
+        { error: "Name and image are required fields." },
+        { status: 400 }
+    );
+}
+
   return Response.json(true);
 }
 
