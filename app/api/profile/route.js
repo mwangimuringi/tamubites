@@ -51,7 +51,6 @@ export async function PUT(req) {
                 { error: "User not found." },
                 { status: 404 }
             );
-            // return Response.json({ error: "User not found." }, { status: 404 });
         }
 
         await User.updateOne(filter, { name, image });
