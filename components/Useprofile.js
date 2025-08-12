@@ -10,7 +10,6 @@ export function useProfile() {
         setData(data);
         console.log(data);
         setLoading(false);
-        setLoading(false);
       });
     })
   }, []);
