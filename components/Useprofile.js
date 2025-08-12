@@ -8,6 +8,8 @@ export function useProfile() {
     fetch('/api/profile').then(response => {
       response.json().then(data => {
         setData(data);
+        console.log(data);
+        setLoading(false);
         setLoading(false);
       });
     })
