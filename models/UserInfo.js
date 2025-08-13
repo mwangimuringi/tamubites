@@ -7,6 +7,8 @@ const UserInfoSchema = new Schema({
   city: {type: String},
   country: {type: String},
   phone: {type: String},
+  birthday: {type: Date},
+  gender: {type: String},
   admin: {type: Boolean, default: false},
 }, {timestamps: true});
 
