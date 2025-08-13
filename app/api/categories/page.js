@@ -63,9 +63,6 @@ export async function GET() {
   try {
     await connectToDatabase();
     const categories = await Category.find();
-    if (categories.length === 0) {
-      return Response.json({ message: "No categories found" });
-    }
     return Response.json({
       message: "Categories fetched successfully",
       categories,
