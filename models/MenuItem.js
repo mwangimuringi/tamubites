@@ -7,7 +7,6 @@ const ExtraPriceSchema = new Schema({
 
 const MenuItemSchema = new Schema({
   image: { type: String },
-  price: { type: Number },
   name: { type: String },
   description: { type: String },
   category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },  // Make sure to reference the appropriate model if using ObjectId
