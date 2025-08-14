@@ -24,9 +24,7 @@ export default function OrderPage() {
           <div>
             <div className="bg-gray-100 p-4 rounded-lg">
               <AddressInputs disabled={true} addressProps={order} />
-              <div className="mt-4">
-                <button>Place Order</button>
-              </div>
+        
             </div>
           </div>
         </div>
