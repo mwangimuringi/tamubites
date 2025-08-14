@@ -9,6 +9,9 @@ export async function POST(req) {
   try {
     const reqBuffer = await req.text();
     const signSecret = process.env.STRIPE_SIGN_SECRET;
+    if (!signSecret) {
+      throw new Error("No sign secret");
+    }
     event = stripe.webhooks.constructEvent(reqBuffer, sig, signSecret);
   } catch (e) {
     console.error("stripe error");
