@@ -11,6 +11,9 @@ export async function POST(req) {
   const { cartProducts, address } = await req.json();
   const session = await getServerSession(authOptions);
   const userEmail = session?.user?.email;
+  if (!userEmail) {
+    return Response.json({ error: "Not logged in" }, 401);
+  }
 
   const orderDoc = await Order.create({
     userEmail,
