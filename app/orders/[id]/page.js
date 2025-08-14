@@ -23,6 +23,7 @@ export default function OrderPage() {
           </div>
           <div>
             <div className="bg-gray-100 p-4 rounded-lg">
+              <AddressInputs/>
               <AddressInputs disabled={true} addressProps={order} />
             </div>
           </div>
