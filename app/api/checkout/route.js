@@ -10,6 +10,9 @@ export async function POST(req) {
 
   const { cartProducts, address } = await req.json();
   const session = await getServerSession(authOptions);
+  if (!session) {
+    return Response.redirect("/api/auth/signin");
+  }
   const userEmail = session?.user?.email;
 
   const orderDoc = await Order.create({
