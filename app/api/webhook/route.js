@@ -11,6 +11,7 @@ export async function POST(req) {
     const signSecret = process.env.STRIPE_SIGN_SECRET;
     if (!signSecret) {
       throw new Error("No sign secret");
+      return Response.json("No sign secret", { status: 400 });
     }
     event = stripe.webhooks.constructEvent(reqBuffer, sig, signSecret);
   } catch (e) {
